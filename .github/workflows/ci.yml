@@ -66,7 +66,7 @@ jobs:
         uses: actions/upload-artifact@v3
         if: matrix.python-versions == '3.10'
         with:
-          name: ${{ env.PACKAGE_NAME }}-${{ env.PACKAGE_VERSION }}
+          name: ${{ env.PACKAGE_NAME }}-python${{matrix.python-versions}}-${{ env.PACKAGE_VERSION }}
           path: dist/*.tar.gz
           if-no-files-found: error
 
@@ -74,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v3
         if: matrix.python-versions == '3.10'
         with:
-          name: Coverage
+          name: Coverage-python${{matrix.python-versions}}-${{ env.PACKAGE_VERSION }}
           path: htmlcov
           if-no-files-found: error
 

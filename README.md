@@ -25,6 +25,7 @@ This repository demonstrates an opinionated setup for a python command line app.
 See `install.sh`.
 
 - Download the tar from the GitHub Actions build artifacts (could also use the wheel (.whl) if you prefer)
+- Make sure you have the correct version of python installed (probably python3.10). If not use pyenv (see install pyenv section below).
 - Install pipx (not required but this ensures the tool is installed in it's own environment and dependencies cannot make a mess of your system)
 - [Install it with pipx](https://pypa.github.io/pipx/docs/#pipx-install) `pipx install --python some-version path-to-tar` (or with pip if you must).
 - Run `demo hello world` on the command line to check it installed ok
@@ -79,6 +80,43 @@ The `.github/workflows/ci.yml` define a workflow to run on build and test the CL
 ## Want to know more?
 
 Check out the [Tour](Tour.md)
+
+## How to install pyenv
+
+For ubuntu. pyenv makes life easier with miltiple versions.
+
+1. Install [python build tooling](https://github.com/pyenv/pyenv/wiki#suggested-build-environment) (you are going to build and install python from source)
+    ```
+    sudo apt update; sudo apt install build-essential libssl-dev zlib1g-dev \
+    libbz2-dev libreadline-dev libsqlite3-dev curl \
+    libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+    ```
+1. Install pyenv using the pyenv installer
+    ```
+    curl https://pyenv.run | bash
+    ```
+1. After installing, follow [these instructions](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv) to set up your shell environment.
+
+## How to install a new version of python using pyenv
+
+Install the version you want:
+```bash
+# choose what version you want
+pyenv install 3.10  # can add many 3.9 3.10 3.11
+# fix any shims so that commands like python3.10 work
+pyenv rehash
+python3.10 --version
+# see what is installed
+pyenv versions
+```
+
+If you want the current folder to always use a version set it as local
+
+```bash
+python3 --version # will print your system python version, say 3.8
+pyenv local 3.10
+python3 --version ## will now print the version of 3.10 installed by pyenv
+```
 
 ## Troubleshooting
 

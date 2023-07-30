@@ -1,13 +1,12 @@
 """Initial Create DB
 
 Revision ID: 0a59bacb83a8
-Revises: 
+Revises:
 Create Date: 2023-07-28 17:15:30.209367
 
 """
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "0a59bacb83a8"

@@ -1,16 +1,14 @@
 """Main module."""
 
-import typer
 import sqlalchemy
-
-from sqlalchemy import create_engine, select
-from sqlalchemy.orm import Session
-from sqlalchemy.engine import URL
-from sqlalchemy_utils import database_exists, create_database, drop_database
-
-from model import User, Address, Base
-
+import typer
 from alembic import config
+from sqlalchemy import create_engine, select
+from sqlalchemy.engine import URL
+from sqlalchemy.orm import Session
+from sqlalchemy_utils import create_database, database_exists, drop_database
+
+from model import Address, Base, User
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -16,6 +16,7 @@ config = config.Config("alembic.ini")
 
 app = typer.Typer()
 
+# url creds should probably come from environment variables but below you can either hardcode or load from config.
 # url = URL.create(
 #     drivername="postgresql",
 #     username="postgres",
@@ -25,14 +26,14 @@ app = typer.Typer()
 #     port="5432",
 #     database="sampleDb",
 # )
+
 url = config.get_main_option("sqlalchemy.url")
+engine = create_engine(url, echo=True)  # echo for dev to outputing SQL
 
 
 @app.command()
 def create_db():
     print("sql sqlalchemy version: " + sqlalchemy.__version__)
-
-    engine = create_engine(url, echo=True)  # echo for dev to outputing SQL
 
     if not database_exists(engine.url):
         print("Creating db")
@@ -66,8 +67,6 @@ def create_db():
 
 @app.command()
 def drop_db():
-    engine = create_engine(url, echo=True)  # echo for dev to outputing SQL
-
     if database_exists(engine.url):
         print("Dropping db")
         drop_database(engine.url)
@@ -77,7 +76,6 @@ def drop_db():
 
 @app.command()
 def query_db():
-    engine = create_engine(url, echo=True)  # echo for dev to outputing SQL
     session = Session(engine)
 
     stmt = select(User).where(User.name.in_(["spongebob", "sandy"]))

@@ -5,6 +5,7 @@ This repository demonstrates an opinionated setup for a python command line app 
 - configure the VS Code IDE for easy python3 and database based development, including testing and linting and sql tools
 - a docker based development environment and dev container running postgres
 - an ORM (sqlalchemy) and database migrations (alembic)
+- Continuous integration using GitHub Actions to run tests and generate coverage reports with tests connecting to a real database running in a container alongside the build runner.
 
 ## Developer Quick start
 
@@ -20,22 +21,24 @@ This repository demonstrates an opinionated setup for a python command line app 
 
 # Database commands
 
-CLI Commands to manage the database have been added. Typer has been used to make a nice CLI app.
+CLI Commands to demonstrate database use, and to manage the database have been added. Typer has been used to make a user friendly CLI app.
 
 ```bash
-# connect to postgress, create the database if required and then create 2 tables based on the ORM
+# connect to postgress, create the database if required and then create 2 tables based on the ORM.  Thhis comand shows how to use the ORM to create the database schema and populate some rows of data
 demo create-db
 
-# Use sql alchemy to query the database
+# Use sql alchemy to query the database.
 demo query-db
 
 # clean up once done and drop the database
 demo drop-db
 ```
 
+The database connection details including password are loaded from a config file alembic.ini but could asily be passed as a CLI command argument or environment variable.
+
 # Database migrations
 
-To enable you to manage a production database over time you can use alembic to manage migrations. This is a common pattern in python web apps.
+To enable you to manage a production database over time you can use alembic to migrate the data schema. Migrations are the .py files in the `/migrations` folder. The `alembic.ini` file configures the database connection string and the location of the migrations folder. Usw the `alembic` command line tool to add and run the migrations.
 
 ```bash
 # upgrade an empty database to the latest version
@@ -52,9 +55,9 @@ alembic revision --autogenerate -m "Added some table or column"
 
 The app uses VS code with docker the devcontainers feature to setup a python environment with all tools preinstalled. All you need is vscode and docker to be able develop.
 
-You can connect to the database externally using Azure data studio or some other database tool on 127.0.0.1:5432.
+You can connect to the database externally using Azure data studio or some other database tool on 127.0.0.1:5432 as well as using sqltools from within VSCode.
 
-## Tools - poetry, pyenv, isort, flake8, black
+## Tools - poetry, pyenv, SQLAlchemy etc
 
 All these tools are preinstalled in the dev container:
 

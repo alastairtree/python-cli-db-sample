@@ -1,12 +1,10 @@
-# Sample python command line app with developer environment and continuous integration
+# Sample python database command line app with developer environment and continuous integration
 
-This repository demonstrates an opinionated setup for a python command line app. It shows how to
+This repository demonstrates an opinionated setup for a python command line app with database access. It expands on [a python cli sample app](https://github.com/alastairtree/python-cli-devenv-and-ci-sample) to add database functionality:
 
-- configure the VS Code IDE for easy  python3 based development, including testing and linting
-- a docker based development environment
-- package management and python version tooling
-- continuous integration using GitHub including unit tests and code coverage
-- packaging and building the python CLI app ready for distribution
+- configure the VS Code IDE for easy python3 and database based development, including testing and linting and sql tools
+- a docker based development environment and dev container running postgres
+- an ORM (sqlalchemy) and database migrations (alembic)
 
 ## Developer Quick start
 
@@ -20,23 +18,41 @@ This repository demonstrates an opinionated setup for a python command line app.
 - One click to package the app into the /dist folder: `./pack.sh`
 - One click to run the tests and package the app across multiple versions of python 3.9, 3.10, 3.11 etc: `./build-all.sh`
 
-## How to install and use the tool
+# Database commands
 
-See `install.sh`.
+CLI Commands to manage the database have been added. Typer has been used to make a nice CLI app.
 
-- Download the tar from the GitHub Actions build artifacts (could also use the wheel (.whl) if you prefer)
-- Make sure you have the correct version of python installed (probably python3.10). If not use pyenv (see install pyenv section below).
-- Install pipx (not required but this ensures the tool is installed in it's own environment and dependencies cannot make a mess of your system)
-- [Install it with pipx](https://pypa.github.io/pipx/docs/#pipx-install) `pipx install --python some-version path-to-tar` (or with pip if you must).
-- Run `demo hello world` on the command line to check it installed ok
+```bash
+# connect to postgress, create the database if required and then create 2 tables based on the ORM
+demo create-db
+
+# Use sql alchemy to query the database
+demo query-db
+
+# clean up once done and drop the database
+demo drop-db
+```
+
+# Database migrations
+
+To enable you to manage a production database over time you can use alembic to manage migrations. This is a common pattern in python web apps.
+
+```bash
+# upgrade an empty database to the latest version
+alembic upgrade head
+
+# generate a SQL script so you can apply the migration manually
+alembic upgrade head --sql > upgrade.sql
+
+# create a new migration by detetcing changes in the ORM. Will create a new file in the migrations folder
+alembic revision --autogenerate -m "Added some table or column"
+```
 
 ## IDE, Docker, Python
 
 The app uses VS code with docker the devcontainers feature to setup a python environment with all tools preinstalled. All you need is vscode and docker to be able develop.
 
-## Python command line app using typer
-
-This repo publishes to the `/dist` folder a python wheel (.whl) and tar containing a CLI executable called `demo` that can be installed and run. This app uses the library typer to produce a user friendly interactive cli
+You can connect to the database externally using Azure data studio or some other database tool on 127.0.0.1:5432.
 
 ## Tools - poetry, pyenv, isort, flake8, black
 
@@ -44,42 +60,10 @@ All these tools are preinstalled in the dev container:
 
 - **Python3** - multiple versions installed and available, managed using pyenv
 - **Poetry** - tool to manage python dependencies, tools and package
+- **SQLAlchemy** - ORM to access the database
+- **Alembic** - database migrations
 - **isort, black and flake8** - configured to lint and tidy up your python code automatically. Executed using ./build.sh and CTRL+SHIFT+B (build in vscode)
 
-## Testing - pytest, code coverage
-
-The project shows how to create unit test.
-
-Either use the test runner in vscode (with debugging)
-
-Or on the cli using pytest:
-
-```
-$ pytest
-
-# or a subset of tests
-$ pytest tests/test_main.py
-$ pytest -k hello
-```
-
-The tests can be run:
-
-- from inside vscode using the Testing window
-- from the CLI against the current and multiple python versions (See quick start)
-- In GitHub actions on every check-in
-
-Test reports appear automatically in the github actions report
-
-Code coverage data is generated on build into the folder `htmlcov`
-
-
-## Continuous Integration with GitHub Actions
-
-The `.github/workflows/ci.yml` define a workflow to run on build and test the CLI against multiple versions of python. Build artifacts are generated and a copy of the cli app is available for download for every build
-
-## Want to know more?
-
-Check out the [Tour](Tour.md)
 
 ## How to install pyenv
 

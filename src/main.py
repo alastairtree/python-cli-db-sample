@@ -10,46 +10,42 @@ from sqlalchemy_utils import database_exists, create_database, drop_database
 
 from model import User, Address, Base
 
+from alembic import config
+
+# this is the Alembic Config object, which provides
+# access to the values within the .ini file in use.
+config = config.Config("alembic.ini")
+
 app = typer.Typer()
 
-url = URL.create(
-    drivername="postgresql",
-    username="postgres",
-    password="mysecretpassword",
-    host="host.docker.internal",  # use localhost etc if not inside docker desktop!
-    port="5432",
-    database="sampleDb",
-)
-
-
-@app.command()
-def hello(name: str):
-    print(f"Hi {name}!")
-    print("sql alc vers: " + sqlalchemy.__version__)
-
-
-@app.command()
-def goodbye(name: str, formal: bool = False):
-    if formal:
-        print(f"Goodbye Ms. {name}. Have a good day.")
-    else:
-        print(f"Bye {name}!")
+# url = URL.create(
+#     drivername="postgresql",
+#     username="postgres",
+#     password="mysecretpassword",
+#     # host="host.docker.internal",  # use this if accessing a docker desktop container outsode the devcontainer!
+#     host="localhost",
+#     port="5432",
+#     database="sampleDb",
+# )
+url = config.get_main_option("sqlalchemy.url")
 
 
 @app.command()
 def create_db():
+    print("sql sqlalchemy version: " + sqlalchemy.__version__)
+
     engine = create_engine(url, echo=True)  # echo for dev to outputing SQL
 
     if not database_exists(engine.url):
         print("Creating db")
         create_database(engine.url)
+    else:
+        print("Db already exists")
 
-    print(f"Db Exists? {database_exists(engine.url)}")
-
-    connection = engine.connect()
-
+    print("Creating all tables")
     Base.metadata.create_all(engine)
 
+    print("Loading some data")
     with Session(engine) as session:
         spongebob = User(
             name="spongebob",
@@ -67,6 +63,7 @@ def create_db():
         patrick = User(name="patrick", fullname="Patrick Star")
         session.add_all([spongebob, sandy, patrick])
         session.commit()
+    print("Database create complete")
 
 
 @app.command()
@@ -76,8 +73,8 @@ def drop_db():
     if database_exists(engine.url):
         print("Dropping db")
         drop_database(engine.url)
-
-    print(f"Db Exists? {database_exists(engine.url)}")
+    else:
+        print("Skipped - Db does not exist")
 
 
 @app.command()

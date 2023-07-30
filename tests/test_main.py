@@ -17,13 +17,7 @@ def response():
     See more at: http://doc.pytest.org/en/latest/fixture.html
     """
 
-def test_app_says_hello():
-    result = runner.invoke(app, ["hello", "Bob"])
+def test_app_creates_db():
+    result = runner.invoke(app, ["create-db"])
     assert result.exit_code == 0
-    assert "Hello Bob" in result.stdout
-
-def test_app_says_goodbye():
-    name = "Alice"
-    result = runner.invoke(app, ["goodbye", name, "--formal"])
-    assert result.exit_code == 0
-    assert f"Goodbye Ms. {name}. Have a good day." in result.stdout
+    assert "Db Exists? True" in result.stdout

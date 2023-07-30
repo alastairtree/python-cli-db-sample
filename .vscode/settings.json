@@ -12,6 +12,24 @@
             "source.organizeImports": true
         },
       },
-      "isort.args":["--profile", "black"],
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "database": "sampleDb",
+            "username": "postgres",
+            "password": "mysecretpassword",
+            "name": "postgres"
+        }
+    ],
+    "python.analysis.extraPaths": [
+        "./src"
+    ],
 
 }

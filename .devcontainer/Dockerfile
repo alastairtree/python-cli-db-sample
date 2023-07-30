@@ -5,6 +5,8 @@
 ## we start with the version we want as the system version
 FROM mcr.microsoft.com/devcontainers/python:3.11
 
+ENV PYTHONUNBUFFERED 1
+
 # And then use pyenv to install all the other versions as the vscode user
 ARG PYTHON_VERSIONS="3.8 3.9 3.10 3.11"
 USER vscode
@@ -13,3 +15,4 @@ ENV PATH="$PYENV_ROOT/bin:$PATH"
 RUN curl https://pyenv.run | bash
 RUN $PYENV_ROOT/bin/pyenv install -v ${PYTHON_VERSIONS}
 
+RUN pipx install prospector\[with_pyroma\]

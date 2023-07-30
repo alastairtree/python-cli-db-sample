@@ -27,6 +27,30 @@ jobs:
         python-versions: ['3.9', '3.10']
         os: [ubuntu-20.04]
     runs-on: ${{ matrix.os }}
+
+    # add a servcie to host postgres
+    # Service containers to run with `runner-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: mysecretpassword
+
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
     # map step outputs to job outputs so they can be share among jobs
     outputs:
       package_version: ${{ env.PACKAGE_VERSION }}

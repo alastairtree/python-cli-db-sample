@@ -19,14 +19,14 @@
     "sqltools.connections": [
         {
             "previewLimit": 50,
-            "server": "localhost",
+            "server": "db",
             "port": 5432,
             "driver": "PostgreSQL",
             "database": "sampleDb",
             "username": "postgres",
-            "password": "mysecretpassword",
+            "password": "postgres",
             "name": "postgres"
-        }
+        },
     ],
     "python.analysis.extraPaths": [
         "./src"

@@ -57,6 +57,28 @@ The app uses VS code with docker the devcontainers feature to setup a python env
 
 You can connect to the database externally using Azure data studio or some other database tool on 127.0.0.1:5432 as well as using sqltools from within VSCode.
 
+
+## Command line database access
+
+It is also possible to connect to the database from the command line using psql which is pre-installed in the dev container. The database is exposed on port 5432 on localhost and host "db". The password is in the alembic.ini file.
+
+```bash
+$ psql -U postgres -p 5432 -h db -d sampleDb
+Password for user postgres:
+psql (15.3 (Debian 15.3-0+deb12u1))
+Type "help" for help.
+                      ^
+sampleDb=# SELECT * FROM user_account;
+ id |   name    |       fullname
+----+-----------+-----------------------
+  1 | spongebob | Spongebob Squarepants
+  2 | sandy     | Sandy Cheeks
+  3 | patrick   | Patrick Star
+(3 rows)
+
+sampleDb=# exit
+```
+
 ## Tools - poetry, pyenv, SQLAlchemy etc
 
 All these tools are preinstalled in the dev container:

@@ -41,6 +41,10 @@ The database connection details including password are loaded from a config file
 To enable you to manage a production database over time you can use alembic to migrate the data schema. Migrations are the .py files in the `/migrations` folder. The `alembic.ini` file configures the database connection string and the location of the migrations folder. Usw the `alembic` command line tool to add and run the migrations.
 
 ```bash
+# remove the existing sample if already created using sqlalchemy
+dropdb sampleDb -h localhost -U postgres
+createdb sampleDb -h localhost -U postgres
+
 # upgrade an empty database to the latest version
 alembic upgrade head
 

@@ -27,7 +27,7 @@ app = typer.Typer()
 #     database="sampleDb",
 # )
 
-# enable opverriding the database url from the OS env
+# enable overriding the database url from the OS env
 env_override_url = os.getenv("SQLALCHEMY_URL")
 if env_override_url is not None and len(env_override_url) > 0:
     url = config.set_main_option("sqlalchemy.url", env_override_url)

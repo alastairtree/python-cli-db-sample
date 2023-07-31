@@ -1,5 +1,6 @@
 """Main module."""
 
+import os
 import sqlalchemy
 import typer
 from alembic import config
@@ -25,6 +26,11 @@ app = typer.Typer()
 #     port="5432",
 #     database="sampleDb",
 # )
+
+# enable opverriding the database url from the OS env
+env_override_url = os.getenv("SQLALCHEMY_URL")
+if env_override_url is not None and len(env_override_url) > 0:
+    url = config.set_main_option("sqlalchemy.url", env_override_url)
 
 url = config.get_main_option("sqlalchemy.url")
 engine = create_engine(url, echo=True)  # echo for dev to outputing SQL

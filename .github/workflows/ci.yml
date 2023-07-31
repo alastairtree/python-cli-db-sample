@@ -27,7 +27,6 @@ jobs:
         python-versions: ['3.9', '3.10']
         os: [ubuntu-20.04]
     runs-on: ${{ matrix.os }}
-
     # add a servcie to host postgres
     # Service containers to run with `runner-job`
     services:
@@ -80,6 +79,8 @@ jobs:
       - name: build
         run: |
           ./build.sh
+        env:
+          SQLALCHEMY_URL: postgresql://postgres:postgres@localhost/sampleDb
 
       - name: Build wheels and source tarball
         run: |

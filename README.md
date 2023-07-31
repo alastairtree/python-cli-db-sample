@@ -94,6 +94,10 @@ All these tools are preinstalled in the dev container:
 - **isort, black and flake8** - configured to lint and tidy up your python code automatically. Executed using ./build.sh and CTRL+SHIFT+B (build in vscode)
 
 
+## appsmith
+
+A container for appsmith has been added to the docker compose tile. The UI is available at http://localhost:80, and it can connect to the database on host "db" on port 5432. The password is in the alembic.ini file.
+
 ## How to install pyenv
 
 For ubuntu. pyenv makes life easier with miltiple versions.
